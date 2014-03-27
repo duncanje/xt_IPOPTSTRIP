@@ -30,7 +30,8 @@ static unsigned int ipoptstrip_tg(struct sk_buff *skb,
 #endif
 			
 			/* Copy destination address */
-			iphdr->daddr = opt->nexthop;
+			if (opt->nexthop)
+				iphdr->daddr = opt->nexthop;
 			
 			/* Alter header and total lengths */
 			iphdr->ihl = IPV4_HL; // 5 32-bit words in IPv4 header with no options
