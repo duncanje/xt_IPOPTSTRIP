@@ -8,7 +8,7 @@
 #define IPV4_HL 5
 #define IPV4_LEN 20
 
-#if DEBUG
+#ifdef DEBUG
 static void print_skb_header_offsets(struct sk_buff *skb) {
 	printk("Transport header offset: %u\n", skb->transport_header);
 	printk("Network header offset: %u\n", skb->network_header);
@@ -23,7 +23,7 @@ static unsigned int ipoptstrip_tg(struct sk_buff *skb,
 		__wsum csum32;
 		
 		if (opt->optlen > 0) {
-#if DEBUG
+#ifdef DEBUG
 			printk("Packet with IP options (%i bytes) from: %pI4 to: %pI4\n", 
 				opt->optlen, &iphdr->saddr, &iphdr->daddr);
 			print_skb_header_offsets(skb);
@@ -43,7 +43,7 @@ static unsigned int ipoptstrip_tg(struct sk_buff *skb,
 			memmove(skb_transport_header(skb), skb_transport_header(skb) + opt->optlen,
 				skb->tail - (skb->transport_header + opt->optlen));
 			
-#if DEBUG
+#ifdef DEBUG
 			print_skb_header_offsets(skb);
 #endif
 			
