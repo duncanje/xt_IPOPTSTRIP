@@ -37,7 +37,7 @@ static unsigned int ipoptstrip_tg(struct sk_buff *skb,
 #endif
 		
 		/* Copy destination address */
-		if (XT_IPOPTSTRIP_IS_SET(info->flags, XT_IPOPTSTRIP_NH_DST) && opt->nexthop)
+		if (! XT_IPOPTSTRIP_IS_SET(info->flags, XT_IPOPTSTRIP_KEEP_DST) && opt->nexthop)
 			iphdr->daddr = opt->nexthop;
 		
 		/* Alter header and total lengths */

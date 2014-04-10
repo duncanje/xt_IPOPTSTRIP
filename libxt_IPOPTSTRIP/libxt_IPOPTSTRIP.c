@@ -5,14 +5,14 @@
 
 /* Available options */
 static const struct option ipoptstrip_tg_opts[] = {
-	{.name = "nh-dst", .has_arg = false, .val = 'n'},
+	{.name = "keep-dest", .has_arg = false, .val = 'n'},
 	{NULL}
 };
 
 /* Display help text */
 static void ipoptstrip_tg_help(void) {
 	printf("IPOPTSTRIP target options:\n"
-	 " --nh-dst    In case of source routing, use the next hop as destination\n");
+	 " --keep-dest    In case of source routing, do not alter destination\n");
 }
 
 /* Parse options */
@@ -25,11 +25,11 @@ static int ipoptstrip_tg_parse(int c, char **argv, int invert,
 	switch (c) {
 	case 'n':
 		/* Check if option has already been used */
-		if (XT_IPOPTSTRIP_IS_SET(*flags, XT_IPOPTSTRIP_NH_DST))
-			xtables_error(PARAMETER_PROBLEM, "--nh-dst may only be used once");
+		if (XT_IPOPTSTRIP_IS_SET(*flags, XT_IPOPTSTRIP_KEEP_DST))
+			xtables_error(PARAMETER_PROBLEM, "--keep-dest may only be used once");
 		
-		*flags |= XT_IPOPTSTRIP_NH_DST; /* Passed to each call of _parse and _check */
-		info->flags |= XT_IPOPTSTRIP_NH_DST;
+		*flags |= XT_IPOPTSTRIP_KEEP_DST; /* Passed to each call of _parse and _check */
+		info->flags |= XT_IPOPTSTRIP_KEEP_DST;
 		
 		return true;
 	}

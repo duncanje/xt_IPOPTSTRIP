@@ -4,7 +4,7 @@
 #define XT_IPOPTSTRIP_IS_SET(flags,flag) flags & flag
 
 enum {
-	XT_IPOPTSTRIP_NH_DST = 0x01,
+	XT_IPOPTSTRIP_KEEP_DST = 0x01,
 };
 
 struct xt_ipoptstrip_tg_info {
