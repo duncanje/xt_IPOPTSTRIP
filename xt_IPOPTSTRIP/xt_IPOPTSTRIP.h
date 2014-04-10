@@ -1,7 +1,7 @@
 #ifndef _LINUX_NETFILTER_XT_IPOPTSTRIP_H
 #define _LINUX_NETFILTER_XT_IPOPTSTRIP_H 1
 
-#define XT_IPOPTSTRIP_IS_SET(info,flag) info->flags & flag
+#define XT_IPOPTSTRIP_IS_SET(flags,flag) flags & flag
 
 enum {
 	XT_IPOPTSTRIP_NH_DST = 0x01,

@@ -25,7 +25,7 @@ static int ipoptstrip_tg_parse(int c, char **argv, int invert,
 	switch (c) {
 	case 'n':
 		/* Check if option has already been used */
-		if (*flags & XT_IPOPTSTRIP_NH_DST)
+		if (XT_IPOPTSTRIP_IS_SET(*flags, XT_IPOPTSTRIP_NH_DST))
 			xtables_error(PARAMETER_PROBLEM, "--nh-dst may only be used once");
 		
 		*flags |= XT_IPOPTSTRIP_NH_DST; /* Passed to each call of _parse and _check */
