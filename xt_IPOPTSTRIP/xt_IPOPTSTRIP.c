@@ -21,6 +21,7 @@ static unsigned int ipoptstrip_tg(struct sk_buff *skb,
 	const struct xt_action_param *par) {
 		
 	struct ip_options *opt = &(IPCB(skb)->opt);
+	unsigned char *opt_ptr, *opt_end_ptr;
 	struct iphdr *iphdr;
 	const struct xt_ipoptstrip_tg_info *info;
 	__wsum csum32;
@@ -35,10 +36,21 @@ static unsigned int ipoptstrip_tg(struct sk_buff *skb,
 			opt->optlen, &iphdr->saddr, &iphdr->daddr);
 		print_skb_header_offsets(skb);
 #endif
-		
-		/* Copy destination address */
-		if (! XT_IPOPTSTRIP_IS_SET(info->flags, XT_IPOPTSTRIP_KEEP_DST) && opt->nexthop)
-			iphdr->daddr = opt->nexthop;
+		if (! XT_IPOPTSTRIP_IS_SET(info->flags, XT_IPOPTSTRIP_KEEP_DST)) {
+			opt_ptr = (unsigned char*) &iphdr[1];
+			opt_end_ptr = opt_ptr + opt->optlen;
+			
+			for (; opt_ptr < opt_end_ptr; opt_ptr++) {
+				
+				switch (*opt_ptr) {
+					case IPOPT_LSRR:
+					case IPOPT_SSRR:
+						/* Re-write destination field with last address */
+						memcpy(&iphdr->daddr, (opt_ptr+(opt_ptr[1]))-4, 4);
+						break;
+				}
+			}
+		}
 		
 		/* Alter header and total lengths */
 		iphdr->ihl = IPV4_HL; // 5 32-bit words in IPv4 header with no options
